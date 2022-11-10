@@ -29,10 +29,13 @@ public class Task {
 	private String comment;
 	
     @Column(name = "is_done", nullable = false)
-    private Boolean isDone;
+    private Boolean isDone = false;
+    
+    @Column(name = "is_started", nullable = false)
+    private Boolean isStarted = false;
     
     @Column(name = "is_hidden", nullable = false)
-    private Boolean isHidden;
+    private Boolean isHidden = true;
     
     @Column(name = "creation_date", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime creationDate;
