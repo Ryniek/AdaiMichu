@@ -1,10 +1,15 @@
 package pl.rynski.adaimichal.dao.model;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,4 +29,10 @@ public class User {
 
 	@Column(name = "password", nullable = false)
 	private String password;
+	
+	@Column(name = "last_date_of_drawing_task", columnDefinition = "TIMESTAMP")
+	private LocalDateTime lastDateOfDrawingTask;
+	
+	@OneToMany(mappedBy = "creator", orphanRemoval = true)
+	private Set<Task> createdTasks = new HashSet<>();
 }
