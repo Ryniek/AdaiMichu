@@ -27,9 +27,9 @@ public class TaskController {
 		return ResponseEntity.status(HttpStatus.OK).body(taskService.getAllCurrentUserTasks());
 	}
 	
-	@GetMapping("/drowned/unfinished")
+	@GetMapping("/drawned/unfinished")
 	public ResponseEntity<?> getAllDrownUnfinishedTasks() {
-		return ResponseEntity.status(HttpStatus.OK).body(null);
+		return ResponseEntity.status(HttpStatus.OK).body(taskService.getAllDrownUnfinishedTasks());
 	}
 	
 	@PostMapping
@@ -44,7 +44,7 @@ public class TaskController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteUnusedTask(@PathVariable long id) {
-		taskService.deleteUnusedTask(id);
+		taskService.deleteUnstartedTask(id);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }

@@ -13,4 +13,5 @@ import pl.rynski.adaimichal.dao.model.User;
 public interface TaskRepository extends JpaRepository<Task, Long> {
 	List<Task> findAllByCreator(User creator);
 	Optional<Task> findByIdAndCreatorAndIsStartedFalse(Long id, User creator);
+	List<Task> findAllByIsStartedTrueAndIsFinishedFalse();
 }

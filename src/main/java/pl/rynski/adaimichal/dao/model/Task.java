@@ -28,12 +28,13 @@ public class Task {
 	@Column(name = "comment", columnDefinition = "VARCHAR(250)")
 	private String comment;
 	
-    @Column(name = "is_done", nullable = false)
-    private Boolean isDone = false;
+    @Column(name = "is_finished", nullable = false)
+    private Boolean isFinished = false;
     
     @Column(name = "is_started", nullable = false)
     private Boolean isStarted = false;
     
+    //Hidden task cannot be drawn
     @Column(name = "is_hidden", nullable = false)
     private Boolean isHidden = true;
     
@@ -43,8 +44,8 @@ public class Task {
     @Column(name = "expiration_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime expirationDate;
     
-    @Column(name = "done_date", columnDefinition = "TIMESTAMP")
-    private LocalDateTime doneDate;
+    @Column(name = "finish_date", columnDefinition = "TIMESTAMP")
+    private LocalDateTime finishDate;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")

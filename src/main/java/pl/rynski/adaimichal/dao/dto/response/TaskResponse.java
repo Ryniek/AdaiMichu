@@ -11,12 +11,12 @@ public class TaskResponse {
 	private Long id;
 	private String name;
 	private String comment;
-	private boolean isDone;
+	private boolean isFinished;
 	private boolean isStarted;
 	private boolean isHidden;
 	private LocalDateTime creationDate;
 	private LocalDateTime expirationDate;
-	private LocalDateTime doneDate;
+	private LocalDateTime finishDate;
 	private UserResponse creator;
 	
 	public static TaskResponse toResponse(Task task) {
@@ -24,12 +24,12 @@ public class TaskResponse {
 		response.setId(task.getId());
 		response.setName(task.getName());
 		response.setComment(task.getComment());
-		response.setDone(task.getIsDone());
+		response.setFinished(task.getIsFinished());
 		response.setStarted(task.getIsStarted());
 		response.setHidden(task.getIsHidden());
 		response.setCreationDate(task.getCreationDate());
 		Optional.ofNullable(task.getExpirationDate()).ifPresent(expirationDate -> response.setExpirationDate(expirationDate));
-		Optional.ofNullable(task.getDoneDate()).ifPresent(doneData -> response.setDoneDate(doneData));
+		Optional.ofNullable(task.getFinishDate()).ifPresent(doneData -> response.setFinishDate(doneData));
 		response.setCreator(UserResponse.toResponse(task.getCreator()));
 		return response;
 	}

@@ -17,6 +17,7 @@ import pl.rynski.adaimichal.utils.DateUtils;
 @Service
 @RequiredArgsConstructor
 public class TaskService {
+	
 	private final TaskRepository taskRepository;
 	private final CustomUserDetailsService userDetailsService;
 	
@@ -27,7 +28,8 @@ public class TaskService {
 	}
 	
 	public List<TaskResponse> getAllDrownUnfinishedTasks() {
-		return null;
+		List<Task> allDrownUnfinished = taskRepository.findAllByIsStartedTrueAndIsFinishedFalse();
+		return allDrownUnfinished.stream().map(task -> TaskResponse.toResponse(task)).toList();
 	}
 	
 	public TaskResponse createTask(NewTaskDto newTaskDto) {
@@ -46,7 +48,7 @@ public class TaskService {
 		return TaskResponse.toResponse(task);
 	}
 	
-	public void deleteUnusedTask(Long taskId) {
+	public void deleteUnstartedTask(Long taskId) {
 		User currentUser = userDetailsService.getLoggedUser();
 		Task task = taskRepository.findByIdAndCreatorAndIsStartedFalse(taskId, currentUser).orElseThrow(() -> new ResourceNotFoundException("Task", "id", taskId));
 		taskRepository.delete(task);
