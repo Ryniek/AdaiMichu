@@ -35,4 +35,7 @@ public class User {
 	
 	@OneToMany(mappedBy = "creator", orphanRemoval = true)
 	private Set<Task> createdTasks = new HashSet<>();
+	
+	@OneToMany(mappedBy = "drawnUser")
+	private Set<Task> drawnTasks = new HashSet<>();
 }

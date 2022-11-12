@@ -22,19 +22,34 @@ public class TaskController {
 	
 	private final TaskService taskService;
 	
+	@GetMapping("/finished")
+	public ResponseEntity<?> getAllFinishedTasks() {
+		return ResponseEntity.status(HttpStatus.OK).body(taskService.getAllFinished());
+	}
+	
 	@GetMapping("/owned")
 	public ResponseEntity<?> getAllCurrentUserTasks() {
 		return ResponseEntity.status(HttpStatus.OK).body(taskService.getAllCurrentUserTasks());
 	}
 	
-	@GetMapping("/drawned/unfinished")
-	public ResponseEntity<?> getAllDrownUnfinishedTasks() {
-		return ResponseEntity.status(HttpStatus.OK).body(taskService.getAllDrownUnfinishedTasks());
+	@GetMapping("/drawn/unfinished")
+	public ResponseEntity<?> getAllDrawnUnfinishedTasks() {
+		return ResponseEntity.status(HttpStatus.OK).body(taskService.getAllDrawnUnfinishedTasks());
 	}
 	
 	@PostMapping
 	public ResponseEntity<?> createTask(@RequestBody NewTaskDto newTaskDto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(newTaskDto));
+	}
+	
+	@PostMapping("/draw")
+	public ResponseEntity<?> drawTask() {
+		return ResponseEntity.status(HttpStatus.CREATED).body(taskService.drawTask());
+	}
+	
+	@PostMapping("/finish/{id}")
+	public ResponseEntity<?> finishTask(@PathVariable long id) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(taskService.finishTask(id));
 	}
 	
 	@PutMapping("/toggle/hidden/{id}")

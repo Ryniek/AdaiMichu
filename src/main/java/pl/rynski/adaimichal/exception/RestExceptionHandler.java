@@ -21,4 +21,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     		WrongPasswordException exception) {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
     }
+    
+    @ExceptionHandler(TooEarlyOperationException.class)
+    public ResponseEntity<?> handleTooEarlyOperationException (
+    		TooEarlyOperationException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
+    }
+    
+    @ExceptionHandler(NoTaskToDrawnException.class)
+    public ResponseEntity<?> handleNoTaskToDrawnException (
+    		NoTaskToDrawnException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
 }

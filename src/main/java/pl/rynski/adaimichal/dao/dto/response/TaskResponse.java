@@ -15,9 +15,11 @@ public class TaskResponse {
 	private boolean isStarted;
 	private boolean isHidden;
 	private LocalDateTime creationDate;
+	private Long daysToUse;
 	private LocalDateTime expirationDate;
 	private LocalDateTime finishDate;
 	private UserResponse creator;
+	private UserResponse drawnUser;
 	
 	public static TaskResponse toResponse(Task task) {
 		TaskResponse response = new TaskResponse();
@@ -28,9 +30,14 @@ public class TaskResponse {
 		response.setStarted(task.getIsStarted());
 		response.setHidden(task.getIsHidden());
 		response.setCreationDate(task.getCreationDate());
-		Optional.ofNullable(task.getExpirationDate()).ifPresent(expirationDate -> response.setExpirationDate(expirationDate));
-		Optional.ofNullable(task.getFinishDate()).ifPresent(doneData -> response.setFinishDate(doneData));
+		response.setDaysToUse(task.getDaysToUse());
+		Optional.ofNullable(task.getExpirationDate())
+			.ifPresent(expirationDate -> response.setExpirationDate(expirationDate));
+		Optional.ofNullable(task.getFinishDate())
+			.ifPresent(doneData -> response.setFinishDate(doneData));
 		response.setCreator(UserResponse.toResponse(task.getCreator()));
+		Optional.ofNullable(task.getDrawnUser())
+			.ifPresent(drawnUser -> response.setDrawnUser(UserResponse.toResponse(drawnUser)));
 		return response;
 	}
 }
