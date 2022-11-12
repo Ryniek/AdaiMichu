@@ -41,6 +41,9 @@ public class Task {
     @Column(name = "creation_date", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime creationDate;
     
+    @Column(name = "days_to_use", nullable = false)
+    private Long daysToUse;
+    
     @Column(name = "expiration_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime expirationDate;
     
@@ -50,4 +53,8 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private User creator;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drawn_user_id", referencedColumnName = "id")
+    private User drawnUser;
 }
