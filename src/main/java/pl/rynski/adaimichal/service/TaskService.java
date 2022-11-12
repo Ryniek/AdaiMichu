@@ -14,6 +14,7 @@ import pl.rynski.adaimichal.dao.dto.request.NewTaskDto;
 import pl.rynski.adaimichal.dao.dto.response.TaskResponse;
 import pl.rynski.adaimichal.dao.model.Task;
 import pl.rynski.adaimichal.dao.model.User;
+import pl.rynski.adaimichal.exception.NoTaskToDrawnException;
 import pl.rynski.adaimichal.exception.ResourceNotFoundException;
 import pl.rynski.adaimichal.exception.TooEarlyOperationException;
 import pl.rynski.adaimichal.repository.TaskRepository;
@@ -29,6 +30,11 @@ public class TaskService {
 	@Value("${minutes.between.drawing}")
 	private long minutesBetweenDrawing;
 	
+	public List<TaskResponse> getAllFinished() {
+		List<Task> allFinishedTasks = taskRepository.findAllByIsFinishedTrue();
+		return allFinishedTasks.stream().map(task -> TaskResponse.toResponse(task)).toList();
+	}
+	
 	public List<TaskResponse> getAllCurrentUserTasks() {
 		User currentUser = userDetailsService.getLoggedUser();
 		List<Task> allTasksByCreator = taskRepository.findAllByCreator(currentUser);
@@ -37,6 +43,7 @@ public class TaskService {
 	
 	public List<TaskResponse> getAllDrawnUnfinishedTasks() {
 		List<Task> allDrawnUnfinished = taskRepository.findAllByIsStartedTrueAndIsFinishedFalse();
+		checkIfExpirationDatePassed(allDrawnUnfinished);
 		return allDrawnUnfinished.stream().map(task -> TaskResponse.toResponse(task)).toList();
 	}
 	
@@ -58,13 +65,24 @@ public class TaskService {
 		randomTask.setDrawnUser(currentUser);
 		randomTask.setExpirationDate(currentTime.plusDays(randomTask.getDaysToUse()));
 		randomTask.setIsStarted(true);
+		currentUser.setLastDateOfDrawingTask(currentTime);
 		
 		return TaskResponse.toResponse(taskRepository.save(randomTask));
 	}
 	
+	public TaskResponse finishTask(long id) {
+		Task task = taskRepository.findByIdAndDrawnUser(id, userDetailsService.getLoggedUser())
+				.orElseThrow(() -> new ResourceNotFoundException("Task", "id", id));
+		task.setFinishDate(DateUtils.getCurrentDateTime());
+		task.setIsFinished(true);
+		task.setIsStarted(false);
+		return TaskResponse.toResponse(taskRepository.save(task));
+	}
+	
 	public TaskResponse toggleHidden(long taskId) {
 		User currentUser = userDetailsService.getLoggedUser();
-		Task task = taskRepository.findByIdAndCreatorAndIsStartedFalse(taskId, currentUser).orElseThrow(() -> new ResourceNotFoundException("Task", "id", taskId));
+		Task task = taskRepository.findByIdAndCreatorAndIsStartedFalse(taskId, currentUser)
+				.orElseThrow(() -> new ResourceNotFoundException("Task", "id", taskId));
 		task.setIsHidden(!task.getIsHidden());
 		taskRepository.save(task);
 		return TaskResponse.toResponse(task);
@@ -72,18 +90,27 @@ public class TaskService {
 	
 	public void deleteUnstartedTask(Long taskId) {
 		User currentUser = userDetailsService.getLoggedUser();
-		Task task = taskRepository.findByIdAndCreatorAndIsStartedFalse(taskId, currentUser).orElseThrow(() -> new ResourceNotFoundException("Task", "id", taskId));
+		Task task = taskRepository.findByIdAndCreatorAndIsStartedFalse(taskId, currentUser)
+				.orElseThrow(() -> new ResourceNotFoundException("Task", "id", taskId));
 		taskRepository.delete(task);
+	}
+	
+	private void checkIfExpirationDatePassed(List<Task> tasks) {
+		LocalDateTime currentTime = DateUtils.getCurrentDateTime();
+		tasks.stream().forEach(task -> {
+			if(task.getExpirationDate().isBefore(currentTime)) task.setIsFinished(true);
+		});
+		taskRepository.saveAll(tasks);
 	}
 	
 	private void checkDifferenceBetweenTwoDays(LocalDateTime lastDateOfDrawing, LocalDateTime currentDate) {
 		long difference = MINUTES.between(lastDateOfDrawing, currentDate);
-		if(difference < minutesBetweenDrawing) throw new TooEarlyOperationException(currentDate.plusMinutes(difference));
+		if(difference < minutesBetweenDrawing) throw new TooEarlyOperationException(currentDate.plusMinutes(minutesBetweenDrawing - difference));
 	}
 	
 	private Task fetchAndSelectRandomTask() {
 		List<Task> unfinishedNotHiddenTasks = taskRepository.findAllByIsStartedFalseAndIsHiddenFalse();
-		if(unfinishedNotHiddenTasks.isEmpty()) throw new ArrayIndexOutOfBoundsException();
+		if(unfinishedNotHiddenTasks.isEmpty()) throw new NoTaskToDrawnException();
 		return unfinishedNotHiddenTasks.get(new Random().nextInt(unfinishedNotHiddenTasks.size()));
 	}
 }

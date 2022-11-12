@@ -15,4 +15,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 	Optional<Task> findByIdAndCreatorAndIsStartedFalse(Long id, User creator);
 	List<Task> findAllByIsStartedTrueAndIsFinishedFalse();
 	List<Task> findAllByIsStartedFalseAndIsHiddenFalse();
+	Optional<Task> findByIdAndDrawnUser(Long id, User drawnUser);
+	List<Task> findAllByIsFinishedTrue();
 }

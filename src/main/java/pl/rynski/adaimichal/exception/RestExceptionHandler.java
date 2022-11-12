@@ -28,9 +28,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
     }
     
-    @ExceptionHandler(ArrayIndexOutOfBoundsException.class)
-    public ResponseEntity<?> handleArrayIndexOutOfBoundsException (
-    		ArrayIndexOutOfBoundsException exception) {
+    @ExceptionHandler(NoTaskToDrawnException.class)
+    public ResponseEntity<?> handleNoTaskToDrawnException (
+    		NoTaskToDrawnException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 }
