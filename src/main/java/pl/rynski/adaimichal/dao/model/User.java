@@ -34,9 +34,15 @@ public class User {
 	@Column(name = "last_date_of_drawing_task", columnDefinition = "TIMESTAMP")
 	private LocalDateTime lastDateOfDrawingTask;
 	
+	@Column(name = "notification_send", nullable = false)
+	private Boolean notificationSend = false;
+	
 	@OneToMany(mappedBy = "creator", orphanRemoval = true)
 	private Set<Task> createdTasks = new HashSet<>();
 	
 	@OneToMany(mappedBy = "drawnUser")
 	private Set<Task> drawnTasks = new HashSet<>();
+	
+	@Column(name = "assigned_user_id")
+	private Long assignedUserId;
 }
