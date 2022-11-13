@@ -1,5 +1,7 @@
 package pl.rynski.adaimichal.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,12 +40,12 @@ public class TaskController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> createTask(@RequestBody TaskDto newTaskDto) {
+	public ResponseEntity<?> createTask(@Valid @RequestBody TaskDto newTaskDto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(newTaskDto));
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<?> editTask(@RequestBody TaskDto taskDto, @PathVariable long id) {
+	public ResponseEntity<?> editTask(@Valid @RequestBody TaskDto taskDto, @PathVariable long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(taskService.editTask(taskDto, id));
 	}
 	
