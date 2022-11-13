@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import pl.rynski.adaimichal.dao.dto.request.NewTaskDto;
+import pl.rynski.adaimichal.dao.dto.request.TaskDto;
 import pl.rynski.adaimichal.service.TaskService;
 
 @RestController
@@ -38,8 +38,13 @@ public class TaskController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> createTask(@RequestBody NewTaskDto newTaskDto) {
+	public ResponseEntity<?> createTask(@RequestBody TaskDto newTaskDto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(newTaskDto));
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<?> editTask(@RequestBody TaskDto taskDto, @PathVariable long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(taskService.editTask(taskDto, id));
 	}
 	
 	@PostMapping("/draw")
