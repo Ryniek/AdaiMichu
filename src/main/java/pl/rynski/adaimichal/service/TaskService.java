@@ -27,6 +27,8 @@ public class TaskService {
 	
 	private final TaskRepository taskRepository;
 	private final CustomUserDetailsService userDetailsService;
+	private final NotificationService notificationService;
+	
 	@Value("${minutes.between.drawing}")
 	private long minutesBetweenDrawing;
 	
@@ -66,6 +68,9 @@ public class TaskService {
 		randomTask.setExpirationDate(currentTime.plusDays(randomTask.getDaysToUse()));
 		randomTask.setIsStarted(true);
 		currentUser.setLastDateOfDrawingTask(currentTime);
+		currentUser.setNotificationSend(false);
+		
+		notificationService.sendNewDrawnTaskNotification(currentUser.getAssignedUserId());
 		
 		return TaskResponse.toResponse(taskRepository.save(randomTask));
 	}
