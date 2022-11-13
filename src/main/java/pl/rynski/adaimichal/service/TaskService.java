@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import pl.rynski.adaimichal.dao.dto.request.NewTaskDto;
+import pl.rynski.adaimichal.dao.dto.request.TaskDto;
 import pl.rynski.adaimichal.dao.dto.response.TaskResponse;
 import pl.rynski.adaimichal.dao.model.Task;
 import pl.rynski.adaimichal.dao.model.User;
@@ -33,28 +34,35 @@ public class TaskService {
 	private long minutesBetweenDrawing;
 	
 	public List<TaskResponse> getAllFinished() {
-		List<Task> allFinishedTasks = taskRepository.findAllByIsFinishedTrue();
+		List<Task> allFinishedTasks = taskRepository.findAllByIsFinishedTrue(Sort.by("finishDate").descending().and(Sort.by("creationDate")));
 		return allFinishedTasks.stream().map(task -> TaskResponse.toResponse(task)).toList();
 	}
 	
 	public List<TaskResponse> getAllCurrentUserTasks() {
 		User currentUser = userDetailsService.getLoggedUser();
-		List<Task> allTasksByCreator = taskRepository.findAllByCreator(currentUser);
+		List<Task> allTasksByCreator = taskRepository.findAllByCreator(currentUser, Sort.by("creationDate").descending());
 		return allTasksByCreator.stream().map(task -> TaskResponse.toResponse(task)).toList();
 	}
 	
 	public List<TaskResponse> getAllDrawnUnfinishedTasks() {
-		List<Task> allDrawnUnfinished = taskRepository.findAllByIsStartedTrueAndIsFinishedFalse();
+		List<Task> allDrawnUnfinished = taskRepository.findAllByIsStartedTrueAndIsFinishedFalse(Sort.by("expirationDate").ascending());
 		checkIfExpirationDatePassed(allDrawnUnfinished);
 		return allDrawnUnfinished.stream().map(task -> TaskResponse.toResponse(task)).toList();
 	}
 	
-	public TaskResponse createTask(NewTaskDto newTaskDto) {
+	public TaskResponse createTask(TaskDto newTaskDto) {
 		User currentUser = userDetailsService.getLoggedUser();
-		Task task = NewTaskDto.taskFromDto(newTaskDto, currentUser);
+		Task task = TaskDto.taskFromDto(newTaskDto, currentUser);
 		task.setCreationDate(DateUtils.getCurrentDateTime());
 		taskRepository.save(task);
 		return TaskResponse.toResponse(task);
+	}
+	
+	public TaskResponse editTask(TaskDto taskDto, long id) {
+		User currentUser = userDetailsService.getLoggedUser();
+		Task task = taskRepository.findByIdAndCreatorAndIsStartedFalseAndIsFinishedFalse(id, currentUser)
+				.orElseThrow(() -> new ResourceNotFoundException("Task", "id", id));
+		return TaskResponse.toResponse(taskRepository.save(TaskDto.editTaskFromDto(task, taskDto)));
 	}
 	
 	public TaskResponse drawTask() {
@@ -86,7 +94,7 @@ public class TaskService {
 	
 	public TaskResponse toggleHidden(long taskId) {
 		User currentUser = userDetailsService.getLoggedUser();
-		Task task = taskRepository.findByIdAndCreatorAndIsStartedFalse(taskId, currentUser)
+		Task task = taskRepository.findByIdAndCreatorAndIsStartedFalseAndIsFinishedFalse(taskId, currentUser)
 				.orElseThrow(() -> new ResourceNotFoundException("Task", "id", taskId));
 		task.setIsHidden(!task.getIsHidden());
 		taskRepository.save(task);
@@ -95,7 +103,7 @@ public class TaskService {
 	
 	public void deleteUnstartedTask(Long taskId) {
 		User currentUser = userDetailsService.getLoggedUser();
-		Task task = taskRepository.findByIdAndCreatorAndIsStartedFalse(taskId, currentUser)
+		Task task = taskRepository.findByIdAndCreatorAndIsStartedFalseAndIsFinishedFalse(taskId, currentUser)
 				.orElseThrow(() -> new ResourceNotFoundException("Task", "id", taskId));
 		taskRepository.delete(task);
 	}
