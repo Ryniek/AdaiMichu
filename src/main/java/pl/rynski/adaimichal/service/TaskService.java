@@ -34,7 +34,7 @@ public class TaskService {
 	private long minutesBetweenDrawing;
 	
 	public List<TaskResponse> getAllFinished() {
-		List<Task> allFinishedTasks = taskRepository.findAllByIsFinishedTrue(Sort.by("finishDate").descending().and(Sort.by("creationDate")));
+		List<Task> allFinishedTasks = taskRepository.shouldFindAllFinishedSortedByFinishDate();
 		return allFinishedTasks.stream().map(task -> TaskResponse.toResponse(task)).toList();
 	}
 	
