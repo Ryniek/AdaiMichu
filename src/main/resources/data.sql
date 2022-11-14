@@ -1,8 +1,8 @@
-INSERT INTO user (id, name, email, password, last_date_of_drawing_task, notification_send, assigned_user_id)
+INSERT INTO users (id, name, email, password, last_date_of_drawing_task, notification_send, assigned_user_id)
 VALUES (1, 'ada', 'michalrynski96@gmail.com', '$2a$10$fjhn5UsqI.0Mh6ckYhsbyeM8i2rPquiwOxOM3UzHP0sGzPZIBGtX6', '2022-11-08 10:17:01', false, 2),
 (2, 'michu', null, '$2a$10$Pn.EJc1JRQ64N5MxQsiu4uYbsSsj9evMwLKbgWW.nkt7Mfa2XknXe', '2022-11-09 21:12:14', false, 1);
 
-INSERT INTO task (id, name, comment, is_finished, is_started, is_hidden, creation_date, days_to_use, expiration_date, finish_date, creator_id, drawn_user_id)
+INSERT INTO tasks (id, name, comment, is_finished, is_started, is_hidden, creation_date, days_to_use, expiration_date, finish_date, creator_id, drawn_user_id)
 VALUES (1, 'Ścieranie kurzów w całym domu', 'TYLKO DOKŁADNIE!!!', false, false, false, '2022-11-09 15:15:01', 14, null, null, 1, null),
 (2, 'Używanie cały dzień lewej ręki', null, false, false, false, '2022-11-09 15:17:01', 12, null, null, 1, null),
 (3, 'Śniadanie do łóżka', null, false, false, false, '2022-11-10 11:04:01', 10, null, null, 1, null),
