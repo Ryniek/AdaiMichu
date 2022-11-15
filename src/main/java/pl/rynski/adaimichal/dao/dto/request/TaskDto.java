@@ -1,5 +1,7 @@
 package pl.rynski.adaimichal.dao.dto.request;
 
+import java.util.Optional;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -24,7 +26,8 @@ public class TaskDto {
 		task.setName(dto.getName());
 		task.setComment(dto.getComment());
 		task.setDaysToUse(dto.getDaysToUse());
-		task.setCreator(creator);
+		Optional.ofNullable(creator)
+			.ifPresent(creatorUser -> task.setCreator(creatorUser));
 		return task;
 	}
 	
