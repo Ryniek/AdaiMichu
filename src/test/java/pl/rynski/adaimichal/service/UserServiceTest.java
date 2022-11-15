@@ -23,7 +23,7 @@ import pl.rynski.adaimichal.security.CustomUserDetailsService;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 	
-	@InjectMocks UserService userService;
+	@InjectMocks private UserService userService;
 	@Mock private UserRepository userRepository;
 	@Mock private PasswordEncoder passwordEncoder;
 	@Mock private CustomUserDetailsService userDetailsService;
