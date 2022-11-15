@@ -54,8 +54,7 @@ public class TaskService {
 		User currentUser = userDetailsService.getLoggedUser();
 		Task task = TaskDto.taskFromDto(newTaskDto, currentUser);
 		task.setCreationDate(DateUtils.getCurrentDateTime());
-		taskRepository.save(task);
-		return TaskResponse.toResponse(task);
+		return TaskResponse.toResponse(taskRepository.save(task));
 	}
 	
 	public TaskResponse editTask(TaskDto taskDto, long id) {
