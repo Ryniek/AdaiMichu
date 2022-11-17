@@ -35,7 +35,8 @@ public class TaskResponse {
 			.ifPresent(expirationDate -> response.setExpirationDate(expirationDate));
 		Optional.ofNullable(task.getFinishDate())
 			.ifPresent(doneData -> response.setFinishDate(doneData));
-		response.setCreator(UserResponse.toResponse(task.getCreator()));
+		Optional.ofNullable(task.getCreator())
+			.ifPresent(creator -> response.setCreator(UserResponse.toResponse(creator)));
 		Optional.ofNullable(task.getDrawnUser())
 			.ifPresent(drawnUser -> response.setDrawnUser(UserResponse.toResponse(drawnUser)));
 		return response;
