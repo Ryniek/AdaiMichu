@@ -3,8 +3,8 @@ package pl.rynski.adaimichal.service;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -101,12 +101,11 @@ class TaskServiceTest {
 	@Test
 	void shouldCreateTask() {
 		User user = new User();
-		when(userDetailsService.getLoggedUser()).thenReturn(user);
+		user.setId(1L);
 		TaskDto taskDto = new TaskDto();
 		taskDto.setName("Test");
-		Task task = new Task();
-		task.setName("Test");
-		when(taskRepository.save(Mockito.any())).thenReturn(task);
+		when(userDetailsService.getLoggedUser()).thenReturn(user);
+		when(taskRepository.save(Mockito.any())).thenReturn(TaskDto.taskFromDto(taskDto, user));
 		
 		TaskResponse response = taskService.createTask(taskDto);
 		
@@ -160,6 +159,7 @@ class TaskServiceTest {
 		TaskResponse drawTask = taskService.drawTask();
 		
 		assertEquals(task.getName(), drawTask.getName());
+		assertTrue(task.getIsStarted());
 	}
 	
 	@Test
@@ -176,8 +176,31 @@ class TaskServiceTest {
 	}
 
 	@Test
-	void testFinishTask() {
-		fail("Not yet implemented");
+	void shouldFinishTask() {
+		User user = new User();
+		Optional<Task> task = Optional.of(new Task());
+		
+		when(userDetailsService.getLoggedUser()).thenReturn(user);
+		when(taskRepository.findByIdAndDrawnUser(1L, user)).thenReturn(task);
+		when(taskRepository.save(Mockito.any())).thenReturn(task.get());
+		
+		TaskResponse result = taskService.finishTask(1L);
+
+		assertTrue(result.isFinished());
+		assertFalse(result.isStarted());
+		assertNotNull(result.getFinishDate());
+	}
+	
+	@Test
+	void shouldThrowResourceNotFoundExceptionWhenFinishTask() {
+		User user = new User();
+		
+		when(userDetailsService.getLoggedUser()).thenReturn(user);
+		when(taskRepository.findByIdAndDrawnUser(1L, user)).thenReturn(Optional.empty());
+
+		assertThatThrownBy(() -> taskService.finishTask(1L))
+			.isInstanceOf(ResourceNotFoundException.class);
+		verify(taskRepository, never()).save(Mockito.any());
 	}
 
 	@Test
