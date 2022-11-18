@@ -17,6 +17,7 @@ public class TaskDto {
 	@NotNull
 	private String name;
 	private String comment;
+	@NotNull
 	@Min(1)
 	@Max(90)
 	private Long daysToUse;
