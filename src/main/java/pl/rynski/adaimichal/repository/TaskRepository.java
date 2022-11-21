@@ -16,7 +16,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 	List<Task> findAllByCreator(User creator, Sort sort);
 	Optional<Task> findByIdAndCreatorAndIsStartedFalseAndIsFinishedFalse(Long id, User creator);
 	List<Task> findAllByIsStartedTrueAndIsFinishedFalse(Sort sort);
-	List<Task> findAllByIsStartedFalseAndIsHiddenFalse();
+	List<Task> findAllByIsStartedFalseAndIsHiddenFalseAndIsFinishedFalse();
 	Optional<Task> findByIdAndDrawnUser(Long id, User drawnUser);
 	@Query(value = "SELECT t FROM Task t WHERE t.isFinished = TRUE ORDER BY t.finishDate DESC")
 	List<Task> shouldFindAllFinishedSortedByFinishDate();

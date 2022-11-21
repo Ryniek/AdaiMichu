@@ -152,7 +152,7 @@ class TaskServiceTest {
 		task.setDaysToUse(4L);
 		
 		when(userDetailsService.getLoggedUser()).thenReturn(user);
-		when(taskRepository.findAllByIsStartedFalseAndIsHiddenFalse()).thenReturn(Arrays.asList(task));
+		when(taskRepository.findAllByIsStartedFalseAndIsHiddenFalseAndIsFinishedFalse()).thenReturn(Arrays.asList(task));
 		Mockito.doNothing().when(notificationService).sendNewDrawnTaskNotification(ArgumentMatchers.anyLong());
 		when(taskRepository.save(Mockito.any())).thenReturn(task);
 		
@@ -168,7 +168,7 @@ class TaskServiceTest {
 		user.setLastDateOfDrawingTask(DateUtils.getCurrentDateTime().minusDays(100));
 		
 		when(userDetailsService.getLoggedUser()).thenReturn(user);
-		when(taskRepository.findAllByIsStartedFalseAndIsHiddenFalse()).thenReturn(Collections.EMPTY_LIST);
+		when(taskRepository.findAllByIsStartedFalseAndIsHiddenFalseAndIsFinishedFalse()).thenReturn(Collections.EMPTY_LIST);
 		
 		verify(taskRepository, never()).save(Mockito.any());
 		assertThatThrownBy(() -> taskService.drawTask())

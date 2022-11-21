@@ -110,7 +110,10 @@ public class TaskService {
 	private void checkIfExpirationDatePassed(List<Task> tasks) {
 		LocalDateTime currentTime = DateUtils.getCurrentDateTime();
 		tasks.stream().forEach(task -> {
-			if(task.getExpirationDate().isBefore(currentTime)) task.setIsFinished(true);
+			if(task.getExpirationDate().isBefore(currentTime)) {
+				task.setIsFinished(true);
+				task.setIsStarted(false);
+			}
 		});
 		taskRepository.saveAll(tasks);
 	}
@@ -121,7 +124,7 @@ public class TaskService {
 	}
 	
 	private Task fetchAndSelectRandomTask() {
-		List<Task> unfinishedNotHiddenTasks = taskRepository.findAllByIsStartedFalseAndIsHiddenFalse();
+		List<Task> unfinishedNotHiddenTasks = taskRepository.findAllByIsStartedFalseAndIsHiddenFalseAndIsFinishedFalse();
 		if(unfinishedNotHiddenTasks.isEmpty()) throw new NoTaskToDrawnException();
 		return unfinishedNotHiddenTasks.get(new Random().nextInt(unfinishedNotHiddenTasks.size()));
 	}
