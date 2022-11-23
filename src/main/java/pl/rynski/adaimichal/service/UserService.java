@@ -18,6 +18,11 @@ public class UserService {
 	private final CustomUserDetailsService userDetailsService;
 	private final PasswordEncoder passwordEncoder;
 	
+	public UserResponse getUserDetails() {
+		User currentUser = userDetailsService.getLoggedUser();
+		return UserResponse.toResponse(currentUser);
+	}
+	
 	public UserResponse setEmail(String email) {
 		User currentUser = userDetailsService.getLoggedUser();
 		currentUser.setEmail(email);

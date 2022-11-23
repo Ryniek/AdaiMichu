@@ -64,11 +64,11 @@ class TaskRepositoryTest {
 	}
 
 	@Test
-	void shouldFindAllByIsStartedFalseAndIsHiddenFalse() {
+	void shouldFindAllByIsStartedFalseAndIsHiddenFalseAndIsFinishedFalse() {
 		//when
 		List<Task> tasks = taskRepository.findAllByIsStartedFalseAndIsHiddenFalseAndIsFinishedFalse();
 		//then
-		assertEquals(4, tasks.size());
+		assertEquals(3, tasks.size());
 		assertFalse(tasks.get(0).getIsStarted());
 		assertFalse(tasks.get(1).getIsHidden());
 		assertFalse(tasks.get(1).getIsFinished());
