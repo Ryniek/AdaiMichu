@@ -9,5 +9,7 @@ class AdaimichalApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
+//given
+//when
+//then
 }

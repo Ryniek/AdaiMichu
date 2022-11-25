@@ -1,5 +1,6 @@
 package pl.rynski.adaimichal.security;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import pl.rynski.adaimichal.dao.model.User;
+import pl.rynski.adaimichal.exception.ResourceNotFoundException;
 import pl.rynski.adaimichal.repository.UserRepository;
 
 
@@ -15,7 +17,7 @@ import pl.rynski.adaimichal.repository.UserRepository;
 public class CustomUserDetailsService implements UserDetailsService {
 	
 	private final UserRepository userRepository;
-
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository
@@ -23,5 +25,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 				.orElseThrow(() -> new UsernameNotFoundException("User not found with name : " + username));
 		return UserPrincipal.create(user);
 	}
+	
+    public User getLoggedUser() {
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return userRepository
+                .findByName(currentUser)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "name", currentUser));
+    }
 
 }

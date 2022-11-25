@@ -1,16 +1,24 @@
 package pl.rynski.adaimichal.dao.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@Table(name = "users")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +32,19 @@ public class User {
 
 	@Column(name = "password", nullable = false)
 	private String password;
+	
+	@Column(name = "last_date_of_drawing_task", columnDefinition = "TIMESTAMP")
+	private LocalDateTime lastDateOfDrawingTask;
+	
+	@Column(name = "notification_send", nullable = false)
+	private Boolean notificationSend = false;
+	
+	@OneToMany(mappedBy = "creator", orphanRemoval = true)
+	private Set<Task> createdTasks = new HashSet<>();
+	
+	@OneToMany(mappedBy = "drawnUser")
+	private Set<Task> drawnTasks = new HashSet<>();
+	
+	@Column(name = "assigned_user_id")
+	private Long assignedUserId;
 }
