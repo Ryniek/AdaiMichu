@@ -27,6 +27,19 @@ class UserServiceTest {
 	@Mock private UserRepository userRepository;
 	@Mock private PasswordEncoder passwordEncoder;
 	@Mock private CustomUserDetailsService userDetailsService;
+	
+	@Test
+	void shouldReturnUser() {
+		//given
+		User user = new User();
+		user.setName("Test");
+		
+		when(userDetailsService.getLoggedUser()).thenReturn(user);
+		//when
+		UserResponse response = userService.getUserDetails();
+		//then
+		assertEquals(user.getName(), response.getName());
+	}
 
 	@Test
 	void shouldSetEmail() {

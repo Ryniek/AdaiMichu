@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import pl.rynski.adaimichal.dao.dto.request.TaskDto;
 import pl.rynski.adaimichal.service.TaskService;
@@ -29,6 +30,7 @@ public class TaskController {
 		return ResponseEntity.status(HttpStatus.OK).body(taskService.getAllFinished());
 	}
 	
+	@Operation(description = "Returning all tasks creater buy logged user sorted ascending by creation date")
 	@GetMapping("/owned")
 	public ResponseEntity<?> getAllCurrentUserTasks() {
 		return ResponseEntity.status(HttpStatus.OK).body(taskService.getAllCurrentUserTasks());

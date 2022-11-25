@@ -26,4 +26,10 @@ public class ErrorValidationMessage {
 		}
 		return errorValidationMessage.getSimpleError();
 	}
+	
+	public static List<SimpleValidationError> getValidationError(String errorMessage) {
+		ErrorValidationMessage errorValidationMessage = new ErrorValidationMessage();
+		errorValidationMessage.getSimpleError().add(new SimpleValidationError("",errorMessage));
+		return errorValidationMessage.getSimpleError();
+	}
 }

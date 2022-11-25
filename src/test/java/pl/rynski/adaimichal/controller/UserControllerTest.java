@@ -1,6 +1,7 @@
 package pl.rynski.adaimichal.controller;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,6 +28,12 @@ class UserControllerTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
+	
+	@Test
+	void shouldGetUserDetails() throws Exception {
+		mockMvc.perform(get("/users"))
+			.andExpect(status().isOk());
+	}
 
 	@Test
 	void shouldSetEmail() throws Exception {

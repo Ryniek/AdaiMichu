@@ -18,30 +18,30 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleResourceNotFoundException (
             ResourceNotFoundException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorValidationMessage.getValidationError(exception.getMessage()));
     }
     
     @ExceptionHandler(WrongPasswordException.class)
     public ResponseEntity<?> handleWrongPasswordException (
     		WrongPasswordException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ErrorValidationMessage.getValidationError(exception.getMessage()));
     }
     
     @ExceptionHandler(TooEarlyOperationException.class)
     public ResponseEntity<?> handleTooEarlyOperationException (
     		TooEarlyOperationException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ErrorValidationMessage.getValidationError(exception.getMessage()));
     }
     
     @ExceptionHandler(NoTaskToDrawnException.class)
     public ResponseEntity<?> handleNoTaskToDrawnException (
     		NoTaskToDrawnException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorValidationMessage.getValidationError(exception.getMessage()));
     }
     
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException exception) {
-    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
+    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ErrorValidationMessage.getValidationError(exception.getMessage()));
     }
    
     @Override

@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class PasswordDto {
 	@NotNull
-	@NotBlank
+	@NotBlank(message = "Hasło nie może być puste")
 	private String oldPassword;
 	@NotNull                     
-	@Size(min = 8, max = 25)
+	@Size(min = 8, max = 25, message = "Minimalna ilość znaków w haśle: 8")
 	private String newPassword;
 }
