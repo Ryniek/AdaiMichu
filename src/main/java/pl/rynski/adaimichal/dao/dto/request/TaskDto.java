@@ -13,13 +13,13 @@ import pl.rynski.adaimichal.dao.model.User;
 
 @Data
 public class TaskDto {
-	@NotBlank
+	@NotBlank(message = "Nazwa nie może być pusta")
 	@NotNull
 	private String name;
 	private String comment;
 	@NotNull
-	@Min(1)
-	@Max(90)
+	@Min(value = 1, message = "Minimalna ilość dni jest równa: 1")
+	@Max(value = 90, message = "Maksymalna ilość dni jest równa: 90")
 	private Long daysToUse;
 	
 	public static Task taskFromDto(TaskDto dto, User creator) {

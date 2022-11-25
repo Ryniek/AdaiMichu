@@ -30,7 +30,7 @@ public class UserController {
 	}
 
 	@PutMapping("/email")
-	public ResponseEntity<?> setEmail(@RequestParam @Email String address) {
+	public ResponseEntity<?> setEmail(@RequestParam @Email(message = "Podaj adres email w poprawnej formie.") String address) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.setEmail(address));
 	}
 	

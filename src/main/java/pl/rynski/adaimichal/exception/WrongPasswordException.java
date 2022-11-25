@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class WrongPasswordException extends RuntimeException {
 	
     public WrongPasswordException() {
-        super("Passed wrong old password");
+        super("Niepoprawne stare hasło");
     }
 }
