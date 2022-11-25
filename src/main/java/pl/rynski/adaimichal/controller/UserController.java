@@ -6,6 +6,7 @@ import javax.validation.constraints.Email;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import pl.rynski.adaimichal.dao.dto.request.PasswordDto;
 import pl.rynski.adaimichal.service.UserService;
 
+@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 @Validated
