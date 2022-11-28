@@ -55,7 +55,7 @@ public class Task {
     private LocalDateTime finishDate;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    @JoinColumn(name = "creator_id", referencedColumnName = "id", nullable = false)
     private User creator;
     
     @ManyToOne(fetch = FetchType.LAZY)

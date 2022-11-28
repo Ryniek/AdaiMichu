@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import pl.rynski.adaimichal.dao.dto.request.PasswordDto;
+import pl.rynski.adaimichal.dao.dto.request.ResetPasswordDto;
 import pl.rynski.adaimichal.service.UserService;
 
 @RestController
@@ -41,6 +43,20 @@ public class UserController {
 	@PutMapping("/password")
 	public ResponseEntity<?> setPassword(@RequestBody @Valid PasswordDto passwordDto) {
 		userService.setPassword(passwordDto);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+	
+	@Operation(summary = "Creating reset token and sending email")
+	@PostMapping("/password/reset")
+	public ResponseEntity<?> createResetPasswordToken(@RequestParam @Email(message = "Podaj adres email w poprawnej formie.") String email) {
+		userService.createResetPasswordToken(email);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+	
+	@Operation(summary = "Validating reset token and setting new password if succeeded")
+	@PostMapping("/password/reset/set")
+	public ResponseEntity<?> setPasswordAfterReset(@RequestBody @Valid ResetPasswordDto resetPasswordDto) {
+		userService.validateTokenAndSetPassword(resetPasswordDto);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }
