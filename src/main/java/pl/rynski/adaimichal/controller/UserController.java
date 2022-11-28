@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import pl.rynski.adaimichal.dao.dto.request.PasswordDto;
 import pl.rynski.adaimichal.service.UserService;
@@ -24,16 +25,19 @@ import pl.rynski.adaimichal.service.UserService;
 public class UserController {
 	private final UserService userService;
 	
+	@Operation(summary = "Getting details of logged user")
 	@GetMapping
 	public  ResponseEntity<?> getUserDetails() {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.getUserDetails());
 	}
 
+	@Operation(summary = "Setting email of logged user")
 	@PutMapping("/email")
 	public ResponseEntity<?> setEmail(@RequestParam @Email(message = "Podaj adres email w poprawnej formie.") String address) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.setEmail(address));
 	}
 	
+	@Operation(summary = "Setting password of logged user")
 	@PutMapping("/password")
 	public ResponseEntity<?> setPassword(@RequestBody @Valid PasswordDto passwordDto) {
 		userService.setPassword(passwordDto);
