@@ -1,7 +1,7 @@
 package pl.rynski.adaimichal.controller;
 
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pl.rynski.adaimichal.dao.dto.request.PasswordDto;
-import pl.rynski.adaimichal.dao.dto.response.UserResponse;
+import pl.rynski.adaimichal.dao.dto.request.ResetPasswordDto;
 import pl.rynski.adaimichal.service.UserService;
 
 @WebMvcTest(UserController.class)
@@ -38,7 +38,6 @@ class UserControllerTest {
 	@Test
 	void shouldSetEmail() throws Exception {
 		String email = "testemail@test.com";
-		when(userService.setEmail(email)).thenReturn(new UserResponse());
 		
 		mockMvc.perform(put("/users/email")
 				.param("address", email))
@@ -46,7 +45,7 @@ class UserControllerTest {
 	}
 	
 	@Test
-	void shouldNotAcceptWrongEmail() throws Exception {
+	void shouldNotAcceptWrongEmailWhileSettingEmail() throws Exception {
 		String email = "testemail";
 		
 		mockMvc.perform(put("/users/email")
@@ -104,6 +103,65 @@ class UserControllerTest {
 		String body = objectMapper.writeValueAsString(passwordDto);
 		
 		mockMvc.perform(put("/users/password")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(body))
+				.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	void shouldCreateResetPasswordToken() throws Exception {
+		String email = "testemail@test.com";
+		
+		mockMvc.perform(post("/users/password/reset")
+				.param("email", email))
+				.andExpect(status().isOk());
+	}
+	
+	@Test
+	void shouldNotAcceptWrongEmailWhenCreatingResetPassToken() throws Exception {
+		String email = "testemail";
+		
+		mockMvc.perform(post("/users/password/reset")
+				.param("email", email))
+				.andExpect(status().isNotAcceptable());
+	}
+	
+	@Test
+	void shouldSetPasswordAfterReset() throws Exception {
+		ResetPasswordDto resetPasswordDto = new ResetPasswordDto();
+		resetPasswordDto.setToken("test");
+		resetPasswordDto.setNewPassword("12345678");
+		ObjectMapper objectMapper = new ObjectMapper();
+		String body = objectMapper.writeValueAsString(resetPasswordDto);
+		
+		mockMvc.perform(post("/users/password/reset/set")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(body))
+				.andExpect(status().isOk());
+	}
+	
+	@Test
+	void shouldNotAcceptTooShortPasswordWhenSetPasswordAfterReset() throws Exception {
+		ResetPasswordDto resetPasswordDto = new ResetPasswordDto();
+		resetPasswordDto.setToken("test");
+		resetPasswordDto.setNewPassword("12345");
+		ObjectMapper objectMapper = new ObjectMapper();
+		String body = objectMapper.writeValueAsString(resetPasswordDto);
+		
+		mockMvc.perform(post("/users/password/reset/set")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(body))
+				.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	void shouldNotAcceptNullablePasswordWhenSetPasswordAfterReset() throws Exception {
+		ResetPasswordDto resetPasswordDto = new ResetPasswordDto();
+		resetPasswordDto.setToken("test");
+		ObjectMapper objectMapper = new ObjectMapper();
+		String body = objectMapper.writeValueAsString(resetPasswordDto);
+		
+		mockMvc.perform(post("/users/password/reset/set")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(body))
 				.andExpect(status().isBadRequest());

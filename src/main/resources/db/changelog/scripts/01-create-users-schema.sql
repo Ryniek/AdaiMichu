@@ -2,7 +2,7 @@
 --changeset mrynski:createUsers
 
 create table users (
-    id bigint not null,
+    id bigint not null AUTO_INCREMENT,
     name varchar(255) not null unique,
     email varchar(255) unique,
     password varchar(255) not null,

@@ -2,7 +2,7 @@
 --changeset mrynski:createTasks
 
 create table tasks (
-    id bigint not null,
+    id bigint not null AUTO_INCREMENT,
     name varchar(255) not null,
     comment varchar(255),
     is_finished boolean not null,

@@ -35,7 +35,7 @@ public class SecurityConfig {
 		.cors().and()
 		.csrf().disable()
 		.authorizeHttpRequests((autz) -> autz
-			.antMatchers("/auth/login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+			.antMatchers("/auth/login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/users/password/reset", "/users/password/reset/set").permitAll()
 			.anyRequest().authenticated())
 		.authorizeHttpRequests().and()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

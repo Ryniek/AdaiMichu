@@ -43,6 +43,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException exception) {
     	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ErrorValidationMessage.getValidationError(exception.getMessage()));
     }
+    
+    @ExceptionHandler(TooLateOperationException.class)
+    public ResponseEntity<?> handleTooLateOperationException(TooLateOperationException exception) {
+    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ErrorValidationMessage.getValidationError(exception.getMessage()));
+    }
    
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,

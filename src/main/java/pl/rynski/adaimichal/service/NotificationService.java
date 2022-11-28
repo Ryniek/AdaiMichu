@@ -27,12 +27,14 @@ public class NotificationService {
 	private long minutesBetweenDrawing;
     @Value("${spring.mail.username}")
     private String sourceEmail;
+    @Value("${front.url.address}")
+    private String frontUrl;
 
 	public void sendNewDrawnTaskNotification(Long id) {
 		Optional<User> userToNotify = userRepository.findById(id);
 		userToNotify.ifPresent(user -> {
 			if(user.getEmail() != null && user.getEmail().length() != 0) {
-				sendEmail(user.getEmail(), NotificationType.NEW_TASK);
+				sendEmail(user.getEmail(), NotificationType.NEW_TASK, null);
 			}
 		});
 	}
@@ -43,14 +45,14 @@ public class NotificationService {
 		LocalDateTime currentTime = DateUtils.getCurrentDateTime();
 		for(User user: allUsers) {
 			if(user.getEmail() != null && user.getEmail().length() != 0 && user.getLastDateOfDrawingTask().plusMinutes(minutesBetweenDrawing).isBefore(currentTime) && user.getNotificationSend() == false) {
-				sendEmail(user.getEmail(), NotificationType.DRAW_TIME);
+				sendEmail(user.getEmail(), NotificationType.DRAW_TIME, null);
 				user.setNotificationSend(true);
 			}
 		}
 		userRepository.saveAll(allUsers);
 	}
 	
-	private void sendEmail(String email, NotificationType notificationType) {
+	public void sendEmail(String email, NotificationType notificationType, String resetToken) {
 		SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(sourceEmail);
         message.setTo(email);
@@ -63,6 +65,11 @@ public class NotificationService {
 		case NEW_TASK -> {
 	        message.setSubject("Twój partner wylosował nowe zadanie!");
 	        message.setText("Zaloguj się do aplikacji aby zobaczyć co takiego tym razem na Ciebie ma! :D");
+	        emailSender.send(message);
+		}
+		case RESET_PASSWORD -> {
+	        message.setSubject("Zresetuj hasło - Adaimichu");
+	        message.setText("Aby zresetować hasło wejdź w link: " + frontUrl + "reset?token=" + resetToken);
 	        emailSender.send(message);
 		}
 		}

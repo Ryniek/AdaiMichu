@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -47,4 +48,7 @@ public class User {
 	
 	@Column(name = "assigned_user_id")
 	private Long assignedUserId;
+	
+	@OneToOne(mappedBy = "user")
+	private PasswordResetToken passwordResetToken;
 }
