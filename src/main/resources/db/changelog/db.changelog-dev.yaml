@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: createUsers
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          endDelimiter: \n/\s*\n|\n/\s*$
+          path: changelog/scripts/01-create-users-schema.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
+  - changeSet:
+      id: createTasks
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          endDelimiter: \n/\s*\n|\n/\s*$
+          path: changelog/scripts/02-create-tasks-schema.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
+  - changeSet:
+      id: insertUsers
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          path: changelog/scripts/03-insert-users.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
+  - changeSet:
+      id: insertTestTasks
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          path: changelog/scripts/04-insert-test-tasks.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
