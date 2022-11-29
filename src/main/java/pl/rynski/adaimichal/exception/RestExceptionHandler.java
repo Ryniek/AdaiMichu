@@ -1,5 +1,7 @@
 package pl.rynski.adaimichal.exception;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpHeaders;
@@ -41,6 +43,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException exception) {
+    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ErrorValidationMessage.getValidationError(exception.getMessage()));
+    }
+    
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<?> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException exception) {
+    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ErrorValidationMessage.getValidationError(exception.getMessage()));
+    }
+    
+    @ExceptionHandler(TooLateOperationException.class)
+    public ResponseEntity<?> handleTooLateOperationException(TooLateOperationException exception) {
     	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ErrorValidationMessage.getValidationError(exception.getMessage()));
     }
    

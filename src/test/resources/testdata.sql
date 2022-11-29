@@ -10,3 +10,6 @@ VALUES (1, 'Ścieranie kurzów w całym domu', 'TYLKO DOKŁADNIE!!!', false, fal
 (5, 'Wybierasz film do oglądania', 'Tylko nie Wladce Pierscieni', false, true, false, '2022-11-10 22:31:55', 14, '2022-11-24 22:31:55', null, 1, 2),
 (6, 'Wspólne robienie rogalików', 'Wspólne ale bardziej TY', false, true, false, '2022-11-09 11:11:55', 14, '2022-11-23 11:11:55', null, 1, 1),
 (7, 'Trzy godziny bez IQOSA', 'W obecnosci partnera i ciągiem', true, false, false, '2022-11-10 10:01:40', 7, '2022-11-17 10:01:40', '2022-11-14 10:01:40', 1, 2);
+
+INSERT INTO password_reset_token(id, token, user_id, expiration_date)
+VALUES (1, 'token', '1', '2022-11-16 21:42:55');
