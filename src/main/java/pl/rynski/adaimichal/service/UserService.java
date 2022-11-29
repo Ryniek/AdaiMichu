@@ -54,7 +54,12 @@ public class UserService {
 	
 	public void createResetPasswordToken(String email) {
 		User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
-		String token = generatePasswordResetToken(user);
+		String token;
+		if(user.getPasswordResetToken() != null) {
+			token = renewPasswordResetToken(user.getPasswordResetToken());
+		} else {
+			token = generatePasswordResetToken(user);
+		}
 		notificationService.sendEmail(email, NotificationType.RESET_PASSWORD, token);
 	}
 	
@@ -73,6 +78,14 @@ public class UserService {
 		PasswordResetToken passwordResetToken = new PasswordResetToken();
 		passwordResetToken.setToken(token);
 		passwordResetToken.setUser(user);
+		passwordResetToken.setExpirationDate(DateUtils.getCurrentDateTime().plusMinutes(expirationInMinutes));
+		passwordResetTokenRepository.save(passwordResetToken);
+		return token;
+	}
+	
+	private String renewPasswordResetToken(PasswordResetToken passwordResetToken) {
+		String token = UUID.randomUUID().toString();
+		passwordResetToken.setToken(token);
 		passwordResetToken.setExpirationDate(DateUtils.getCurrentDateTime().plusMinutes(expirationInMinutes));
 		passwordResetTokenRepository.save(passwordResetToken);
 		return token;
