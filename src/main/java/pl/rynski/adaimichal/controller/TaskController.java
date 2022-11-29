@@ -27,7 +27,7 @@ public class TaskController {
 	
 	private final TaskService taskService;
 	
-	@Secured("ROLE_USER")	
+	@Secured({"ROLE_USER", "ROLE_ADMIN"})
 	@Operation(summary = "Returning all finished tasks sorted by finish date descending")
 	@GetMapping("/finished")
 	public ResponseEntity<?> getAllFinishedTasks() {

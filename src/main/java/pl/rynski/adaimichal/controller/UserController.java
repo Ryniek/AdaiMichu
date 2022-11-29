@@ -28,21 +28,21 @@ import pl.rynski.adaimichal.service.UserService;
 public class UserController {
 	private final UserService userService;
 	
-	@Secured("ROLE_USER")
+	@Secured({"ROLE_USER", "ROLE_ADMIN"})
 	@Operation(summary = "Getting details of logged user")
 	@GetMapping
 	public  ResponseEntity<?> getUserDetails() {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.getUserDetails());
 	}
 
-	@Secured("ROLE_USER")
+	@Secured({"ROLE_USER", "ROLE_ADMIN"})
 	@Operation(summary = "Setting email of logged user")
 	@PutMapping("/email")
 	public ResponseEntity<?> setEmail(@RequestParam @Email(message = "Podaj adres email w poprawnej formie.") String address) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.setEmail(address));
 	}
 	
-	@Secured("ROLE_USER")
+	@Secured({"ROLE_USER", "ROLE_ADMIN"})
 	@Operation(summary = "Setting password of logged user")
 	@PutMapping("/password")
 	public ResponseEntity<?> setPassword(@RequestBody @Valid PasswordDto passwordDto) {

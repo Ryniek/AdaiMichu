@@ -78,3 +78,14 @@ databaseChangeLog:
           relativeToChangelogFile: true
           splitStatements: true
           stripComments: true
+  - changeSet:
+      id: globalSettings
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          path: changelog/scripts/09-global_settings_schema_and_data.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
