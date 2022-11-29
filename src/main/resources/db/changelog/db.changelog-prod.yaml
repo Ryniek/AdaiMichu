@@ -56,3 +56,25 @@ databaseChangeLog:
           relativeToChangelogFile: true
           splitStatements: true
           stripComments: true
+  - changeSet:
+      id: createRole
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          path: changelog/scripts/07-create-role-schema.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
+  - changeSet:
+      id: insertRoles
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          path: changelog/scripts/08-insert-roles.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true

@@ -1,7 +1,6 @@
 package pl.rynski.adaimichal.security;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -10,14 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-
-
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -57,7 +55,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             String user = decodedJWT.getSubject();
 
             if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+                return new UsernamePasswordAuthenticationToken(user, null, decodedJWT.getClaim("roles").asList(SimpleGrantedAuthority.class));
             }
 
             return null;

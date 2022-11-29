@@ -1,7 +1,6 @@
 package pl.rynski.adaimichal.security;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.FilterChain;
@@ -12,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.auth0.jwt.JWT;
@@ -42,7 +42,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     new UsernamePasswordAuthenticationToken(
                             creds.getName(),
                             creds.getPassword(),
-                            new ArrayList<>())
+                            creds.getRoles().stream().map(autho -> new SimpleGrantedAuthority(autho.getName())).toList())
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -58,9 +58,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
         String token = JWT.create()
                 .withSubject(principal.getUsername())
+                .withClaim("roles", principal.getAuthorities().stream().map(authority -> authority.getAuthority()).toList())
                 .withExpiresAt(new Date(System.currentTimeMillis() + jwtValidity))
                 .sign(Algorithm.HMAC512(jwtSecret.getBytes()));
-        JwtResponse response = new JwtResponse(token, principal.getUsername());
+        JwtResponse response = new JwtResponse(token, principal.getUsername(), principal.getAuthorities().stream().map(authority -> authority.getAuthority()).toList());
         res.setContentType("application/json");
         res.getWriter().write(new ObjectMapper().writeValueAsString(response));
         res.getWriter().flush();

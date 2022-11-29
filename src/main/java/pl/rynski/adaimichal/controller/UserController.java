@@ -5,6 +5,7 @@ import javax.validation.constraints.Email;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,18 +28,21 @@ import pl.rynski.adaimichal.service.UserService;
 public class UserController {
 	private final UserService userService;
 	
+	@Secured("ROLE_USER")
 	@Operation(summary = "Getting details of logged user")
 	@GetMapping
 	public  ResponseEntity<?> getUserDetails() {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.getUserDetails());
 	}
 
+	@Secured("ROLE_USER")
 	@Operation(summary = "Setting email of logged user")
 	@PutMapping("/email")
 	public ResponseEntity<?> setEmail(@RequestParam @Email(message = "Podaj adres email w poprawnej formie.") String address) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.setEmail(address));
 	}
 	
+	@Secured("ROLE_USER")
 	@Operation(summary = "Setting password of logged user")
 	@PutMapping("/password")
 	public ResponseEntity<?> setPassword(@RequestBody @Valid PasswordDto passwordDto) {
