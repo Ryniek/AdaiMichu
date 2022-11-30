@@ -65,7 +65,7 @@ class AdminServiceTest {
 	void shouldDeleteFinishedTask() {
 		Task task = new Task();
 		task.setId(1L);
-		when(taskRepository.findByIdAndIsFinished(Mockito.anyLong())).thenReturn(Optional.of(task));
+		when(taskRepository.findByIdAndIsFinishedTrue(Mockito.anyLong())).thenReturn(Optional.of(task));
 
 		adminService.deleteFinishedTask(1L);
 		
@@ -74,7 +74,7 @@ class AdminServiceTest {
 
 	@Test
 	void shouldThrowTaskNotFoundWhenDeleteFinishedTask() {
-		when(taskRepository.findByIdAndIsFinished(Mockito.anyLong())).thenReturn(Optional.empty());
+		when(taskRepository.findByIdAndIsFinishedTrue(Mockito.anyLong())).thenReturn(Optional.empty());
 
 		assertThatThrownBy(() -> adminService.deleteFinishedTask(Mockito.anyLong()))
 			.isInstanceOf(ResourceNotFoundException.class);

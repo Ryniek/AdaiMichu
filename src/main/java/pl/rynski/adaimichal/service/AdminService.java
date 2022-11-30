@@ -28,7 +28,7 @@ public class AdminService {
 	}
 	
 	public void deleteFinishedTask(long id) {
-		Task task = taskRepository.findByIdAndIsFinished(id).orElseThrow(() -> new ResourceNotFoundException("Task", "id", id));
+		Task task = taskRepository.findByIdAndIsFinishedTrue(id).orElseThrow(() -> new ResourceNotFoundException("Task", "id", id));
 		taskRepository.delete(task);
 	}
 }              
