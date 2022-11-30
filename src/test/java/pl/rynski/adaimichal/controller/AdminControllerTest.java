@@ -1,5 +1,6 @@
 package pl.rynski.adaimichal.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,5 +73,11 @@ class AdminControllerTest {
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(body))
 			.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	void shouldDeleteFinishedTask() throws Exception {
+		mockMvc.perform(delete("/admin/tasks/{id}", 1L))
+			.andExpect(status().isOk());
 	}
 }
