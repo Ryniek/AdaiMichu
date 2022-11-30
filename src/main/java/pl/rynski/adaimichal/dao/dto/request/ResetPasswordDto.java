@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class ResetPasswordDto {
+	
 	@NotNull
 	@NotBlank(message = "Token nie może być pusty")
 	private String token;

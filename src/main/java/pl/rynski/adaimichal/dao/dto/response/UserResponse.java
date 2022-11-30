@@ -5,6 +5,7 @@ import pl.rynski.adaimichal.dao.model.User;
 
 @Data
 public class UserResponse {
+	
 	private Long id;
 	private String name;
 	private String email;

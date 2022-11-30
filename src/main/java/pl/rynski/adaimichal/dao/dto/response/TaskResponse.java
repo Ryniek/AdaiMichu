@@ -8,6 +8,7 @@ import pl.rynski.adaimichal.dao.model.Task;
 
 @Data
 public class TaskResponse {
+	
 	private Long id;
 	private String name;
 	private String comment;

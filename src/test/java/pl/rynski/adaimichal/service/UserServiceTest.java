@@ -20,11 +20,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.rynski.adaimichal.dao.dto.request.PasswordDto;
 import pl.rynski.adaimichal.dao.dto.request.ResetPasswordDto;
 import pl.rynski.adaimichal.dao.dto.response.UserResponse;
+import pl.rynski.adaimichal.dao.model.GlobalSettings;
 import pl.rynski.adaimichal.dao.model.PasswordResetToken;
 import pl.rynski.adaimichal.dao.model.User;
 import pl.rynski.adaimichal.exception.ResourceNotFoundException;
 import pl.rynski.adaimichal.exception.TooLateOperationException;
 import pl.rynski.adaimichal.exception.WrongPasswordException;
+import pl.rynski.adaimichal.repository.GlobalSettingsRepository;
 import pl.rynski.adaimichal.repository.PasswordResetTokenRepository;
 import pl.rynski.adaimichal.repository.UserRepository;
 import pl.rynski.adaimichal.security.CustomUserDetailsService;
@@ -40,6 +42,7 @@ class UserServiceTest {
 	@Mock private PasswordResetTokenRepository passwordResetTokenRepository;
 	@Mock private JavaMailSender javaMailSender;
 	@Mock private NotificationService notificationService;
+	@Mock private GlobalSettingsRepository globalSettingsRepository;
 	
 	@Test
 	void shouldReturnUser() {
@@ -99,7 +102,10 @@ class UserServiceTest {
 	void shouldCreateResetPasswordToken() {
 		User user = new User();
 		String email = "email@test.pl";
+		GlobalSettings globalSettings = new GlobalSettings();
+		globalSettings.setResetPasswordTokenValidity(600L);
 		when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(user));
+		when(globalSettingsRepository.getReferenceById(Mockito.anyLong())).thenReturn(globalSettings);
 		
 		userService.createResetPasswordToken(email);
 		

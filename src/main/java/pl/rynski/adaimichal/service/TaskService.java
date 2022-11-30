@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +17,7 @@ import pl.rynski.adaimichal.dao.model.User;
 import pl.rynski.adaimichal.exception.NoTaskToDrawnException;
 import pl.rynski.adaimichal.exception.ResourceNotFoundException;
 import pl.rynski.adaimichal.exception.TooEarlyOperationException;
+import pl.rynski.adaimichal.repository.GlobalSettingsRepository;
 import pl.rynski.adaimichal.repository.TaskRepository;
 import pl.rynski.adaimichal.security.CustomUserDetailsService;
 import pl.rynski.adaimichal.utils.DateUtils;
@@ -29,9 +29,7 @@ public class TaskService {
 	private final TaskRepository taskRepository;
 	private final CustomUserDetailsService userDetailsService;
 	private final NotificationService notificationService;
-	
-	@Value("${minutes.between.drawing}")
-	private long minutesBetweenDrawing;
+	private final GlobalSettingsRepository globalSettingsRepository;
 	
 	public List<TaskResponse> getAllFinished() {
 		List<Task> allFinishedTasks = taskRepository.shouldFindAllFinishedSortedByFinishDate();
@@ -120,6 +118,7 @@ public class TaskService {
 	
 	private void checkDifferenceBetweenTwoDays(LocalDateTime lastDateOfDrawing, LocalDateTime currentDate) {
 		long difference = MINUTES.between(lastDateOfDrawing, currentDate);
+		Long minutesBetweenDrawing = globalSettingsRepository.getReferenceById(1L).getMinutesBetweenDrawing();
 		if(difference < minutesBetweenDrawing) throw new TooEarlyOperationException(currentDate.plusMinutes(minutesBetweenDrawing - difference));
 	}
 	

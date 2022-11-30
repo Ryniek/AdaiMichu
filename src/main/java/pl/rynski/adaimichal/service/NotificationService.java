@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import pl.rynski.adaimichal.dao.model.User;
 import pl.rynski.adaimichal.dao.model.enums.NotificationType;
+import pl.rynski.adaimichal.repository.GlobalSettingsRepository;
 import pl.rynski.adaimichal.repository.UserRepository;
 import pl.rynski.adaimichal.utils.DateUtils;
 
@@ -22,9 +23,8 @@ public class NotificationService {
 	
 	private final JavaMailSender emailSender;
 	private final UserRepository userRepository;
+	private final GlobalSettingsRepository globalSettingsRepository;
 	
-	@Value("${minutes.between.drawing}")
-	private long minutesBetweenDrawing;
     @Value("${spring.mail.username}")
     private String sourceEmail;
     @Value("${front.url.address}")
@@ -44,7 +44,10 @@ public class NotificationService {
 		List<User> allUsers = userRepository.findAll();
 		LocalDateTime currentTime = DateUtils.getCurrentDateTime();
 		for(User user: allUsers) {
-			if(user.getEmail() != null && user.getEmail().length() != 0 && user.getLastDateOfDrawingTask().plusMinutes(minutesBetweenDrawing).isBefore(currentTime) && user.getNotificationSend() == false) {
+			if(user.getEmail() != null 
+					&& user.getEmail().length() != 0 
+					&& user.getLastDateOfDrawingTask().plusMinutes(globalSettingsRepository.getReferenceById(1L).getMinutesBetweenDrawing()).isBefore(currentTime) 
+					&& user.getNotificationSend() == false) {
 				sendEmail(user.getEmail(), NotificationType.DRAW_TIME, null);
 				user.setNotificationSend(true);
 			}
