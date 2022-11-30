@@ -10,6 +10,7 @@ import lombok.Data;
 
 @Data
 public class ErrorValidationMessage {
+	
 	private List<SimpleValidationError> simpleError = new ArrayList<>();
 	
 	@AllArgsConstructor

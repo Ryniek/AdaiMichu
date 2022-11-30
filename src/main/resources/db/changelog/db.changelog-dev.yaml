@@ -7,7 +7,7 @@ databaseChangeLog:
           dbms: mysql
           encoding: utf8
           endDelimiter: \n/\s*\n|\n/\s*$
-          path: changelog/scripts/01-create-users-schema.sql
+          path: changelog/scripts/common/01-create-users-schema.sql
           relativeToChangelogFile: true
           splitStatements: true
           stripComments: true
@@ -19,7 +19,7 @@ databaseChangeLog:
           dbms: mysql
           encoding: utf8
           endDelimiter: \n/\s*\n|\n/\s*$
-          path: changelog/scripts/02-create-tasks-schema.sql
+          path: changelog/scripts/common/02-create-tasks-schema.sql
           relativeToChangelogFile: true
           splitStatements: true
           stripComments: true
@@ -30,7 +30,7 @@ databaseChangeLog:
       - sqlFile:
           dbms: mysql
           encoding: utf8
-          path: changelog/scripts/03-insert-users.sql
+          path: changelog/scripts/common/03-insert-users.sql
           relativeToChangelogFile: true
           splitStatements: true
           stripComments: true
@@ -41,7 +41,7 @@ databaseChangeLog:
       - sqlFile:
           dbms: mysql
           encoding: utf8
-          path: changelog/scripts/04-insert-test-tasks.sql
+          path: changelog/scripts/dev/04-insert-test-tasks.sql
           relativeToChangelogFile: true
           splitStatements: true
           stripComments: true
@@ -52,7 +52,7 @@ databaseChangeLog:
       - sqlFile:
           dbms: mysql
           encoding: utf8
-          path: changelog/scripts/05-create-password-reset-token-schema.sql
+          path: changelog/scripts/common/05-create-password-reset-token-schema.sql
           relativeToChangelogFile: true
           splitStatements: true
           stripComments: true
@@ -63,7 +63,7 @@ databaseChangeLog:
       - sqlFile:
           dbms: mysql
           encoding: utf8
-          path: changelog/scripts/06-alter-task-creator-not-null.sql
+          path: changelog/scripts/common/06-alter-task-creator-not-null.sql
           relativeToChangelogFile: true
           splitStatements: true
           stripComments: true
@@ -74,7 +74,7 @@ databaseChangeLog:
       - sqlFile:
           dbms: mysql
           encoding: utf8
-          path: changelog/scripts/07-create-role-schema.sql
+          path: changelog/scripts/common/07-create-role-schema.sql
           relativeToChangelogFile: true
           splitStatements: true
           stripComments: true
@@ -85,7 +85,7 @@ databaseChangeLog:
       - sqlFile:
           dbms: mysql
           encoding: utf8
-          path: changelog/scripts/08-insert-roles.sql
+          path: changelog/scripts/common/08-insert-roles.sql
           relativeToChangelogFile: true
           splitStatements: true
           stripComments: true
@@ -96,7 +96,7 @@ databaseChangeLog:
       - sqlFile:
           dbms: mysql
           encoding: utf8
-          path: changelog/scripts/09-global_settings_schema_and_data.sql
+          path: changelog/scripts/common/09-global_settings_schema_and_data.sql
           relativeToChangelogFile: true
           splitStatements: true
           stripComments: true

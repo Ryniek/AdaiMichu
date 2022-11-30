@@ -13,6 +13,7 @@ import pl.rynski.adaimichal.dao.model.User;
 
 @Data
 public class TaskDto {
+	
 	@NotBlank(message = "Nazwa nie może być pusta")
 	@NotNull
 	private String name;

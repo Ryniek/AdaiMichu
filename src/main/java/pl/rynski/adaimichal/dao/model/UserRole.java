@@ -19,6 +19,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "user_role")
 public class UserRole {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import pl.rynski.adaimichal.dao.model.User;
 
 public class UserPrincipal implements UserDetails {
+	
 	private final Long id;
 	private final String name;
     private final String password;

@@ -27,10 +27,12 @@ import org.springframework.data.domain.Sort;
 
 import pl.rynski.adaimichal.dao.dto.request.TaskDto;
 import pl.rynski.adaimichal.dao.dto.response.TaskResponse;
+import pl.rynski.adaimichal.dao.model.GlobalSettings;
 import pl.rynski.adaimichal.dao.model.Task;
 import pl.rynski.adaimichal.dao.model.User;
 import pl.rynski.adaimichal.exception.NoTaskToDrawnException;
 import pl.rynski.adaimichal.exception.ResourceNotFoundException;
+import pl.rynski.adaimichal.repository.GlobalSettingsRepository;
 import pl.rynski.adaimichal.repository.TaskRepository;
 import pl.rynski.adaimichal.security.CustomUserDetailsService;
 import pl.rynski.adaimichal.utils.DateUtils;
@@ -42,6 +44,7 @@ class TaskServiceTest {
 	@Mock private TaskRepository taskRepository;
 	@Mock private CustomUserDetailsService userDetailsService;
 	@Mock private NotificationService notificationService;
+	@Mock private GlobalSettingsRepository globalSettingsRepository;
 	
 	@Test
 	void testGetAllFinished() {
@@ -150,8 +153,11 @@ class TaskServiceTest {
 		Task task = new Task();
 		task.setName("test");
 		task.setDaysToUse(4L);
+		GlobalSettings globalSettings = new GlobalSettings();
+		globalSettings.setMinutesBetweenDrawing(600L);
 		
 		when(userDetailsService.getLoggedUser()).thenReturn(user);
+		when(globalSettingsRepository.getReferenceById(Mockito.anyLong())).thenReturn(globalSettings);
 		when(taskRepository.findAllByIsStartedFalseAndIsHiddenFalseAndIsFinishedFalse()).thenReturn(Arrays.asList(task));
 		Mockito.doNothing().when(notificationService).sendNewDrawnTaskNotification(ArgumentMatchers.anyLong());
 		when(taskRepository.save(Mockito.any())).thenReturn(task);
@@ -166,9 +172,12 @@ class TaskServiceTest {
 	void shouldThrowNoTaskToDrawnExceptionWhenDrawingTask() {
 		User user = new User();
 		user.setLastDateOfDrawingTask(DateUtils.getCurrentDateTime().minusDays(100));
+		GlobalSettings globalSettings = new GlobalSettings();
+		globalSettings.setMinutesBetweenDrawing(600L);
 		
 		when(userDetailsService.getLoggedUser()).thenReturn(user);
 		when(taskRepository.findAllByIsStartedFalseAndIsHiddenFalseAndIsFinishedFalse()).thenReturn(Collections.EMPTY_LIST);
+		when(globalSettingsRepository.getReferenceById(Mockito.anyLong())).thenReturn(globalSettings);
 		
 		verify(taskRepository, never()).save(Mockito.any());
 		assertThatThrownBy(() -> taskService.drawTask())

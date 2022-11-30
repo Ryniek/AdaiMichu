@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class PasswordDto {
+	
 	@NotNull
 	@NotBlank(message = "Hasło nie może być puste")
 	private String oldPassword;

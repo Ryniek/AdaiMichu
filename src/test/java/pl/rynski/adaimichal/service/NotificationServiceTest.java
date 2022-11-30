@@ -18,7 +18,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import pl.rynski.adaimichal.dao.model.GlobalSettings;
 import pl.rynski.adaimichal.dao.model.User;
+import pl.rynski.adaimichal.repository.GlobalSettingsRepository;
 import pl.rynski.adaimichal.repository.UserRepository;
 import pl.rynski.adaimichal.utils.DateUtils;
 
@@ -27,6 +29,7 @@ class NotificationServiceTest {
 	
 	@Mock private JavaMailSender javaMailSender;
 	@Mock private UserRepository userRepository;
+	@Mock private GlobalSettingsRepository globalSettingsRepository;
 	@InjectMocks private NotificationService notificationService;
 	
 	@Test
@@ -56,9 +59,13 @@ class NotificationServiceTest {
 		User user = new User();
 		user.setEmail("Test");
 		user.setNotificationSend(false);
-		user.setLastDateOfDrawingTask(DateUtils.getCurrentDateTime());
+		user.setLastDateOfDrawingTask(DateUtils.getCurrentDateTime().minusDays(10));
 		users.add(user);
+		GlobalSettings globalSettings = new GlobalSettings();
+		globalSettings.setMinutesBetweenDrawing(60L);
+
 		when(userRepository.findAll()).thenReturn(users);
+		when(globalSettingsRepository.getReferenceById(Mockito.anyLong())).thenReturn(globalSettings);
 		
 		notificationService.sendNewDrawnPossibilityNotification();
 

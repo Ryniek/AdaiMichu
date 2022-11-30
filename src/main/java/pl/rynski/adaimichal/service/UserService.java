@@ -2,7 +2,6 @@ package pl.rynski.adaimichal.service;
 
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +15,7 @@ import pl.rynski.adaimichal.dao.model.enums.NotificationType;
 import pl.rynski.adaimichal.exception.ResourceNotFoundException;
 import pl.rynski.adaimichal.exception.TooLateOperationException;
 import pl.rynski.adaimichal.exception.WrongPasswordException;
+import pl.rynski.adaimichal.repository.GlobalSettingsRepository;
 import pl.rynski.adaimichal.repository.PasswordResetTokenRepository;
 import pl.rynski.adaimichal.repository.UserRepository;
 import pl.rynski.adaimichal.security.CustomUserDetailsService;
@@ -24,15 +24,13 @@ import pl.rynski.adaimichal.utils.DateUtils;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-	//12h
-	@Value("${reset.password.token.validity}")
-	private int expirationInMinutes;
 	
 	private final UserRepository userRepository;
 	private final CustomUserDetailsService userDetailsService;
 	private final PasswordEncoder passwordEncoder;
 	private final PasswordResetTokenRepository passwordResetTokenRepository;
 	private final NotificationService notificationService;
+	private final GlobalSettingsRepository globalSettingsRepository;
 	
 	public UserResponse getUserDetails() {
 		User currentUser = userDetailsService.getLoggedUser();
@@ -78,7 +76,7 @@ public class UserService {
 		PasswordResetToken passwordResetToken = new PasswordResetToken();
 		passwordResetToken.setToken(token);
 		passwordResetToken.setUser(user);
-		passwordResetToken.setExpirationDate(DateUtils.getCurrentDateTime().plusMinutes(expirationInMinutes));
+		passwordResetToken.setExpirationDate(DateUtils.getCurrentDateTime().plusMinutes(globalSettingsRepository.getReferenceById(1L).getResetPasswordTokenValidity()));
 		passwordResetTokenRepository.save(passwordResetToken);
 		return token;
 	}
@@ -86,7 +84,7 @@ public class UserService {
 	private String renewPasswordResetToken(PasswordResetToken passwordResetToken) {
 		String token = UUID.randomUUID().toString();
 		passwordResetToken.setToken(token);
-		passwordResetToken.setExpirationDate(DateUtils.getCurrentDateTime().plusMinutes(expirationInMinutes));
+		passwordResetToken.setExpirationDate(DateUtils.getCurrentDateTime().plusMinutes(globalSettingsRepository.getReferenceById(1L).getResetPasswordTokenValidity()));
 		passwordResetTokenRepository.save(passwordResetToken);
 		return token;
 	}

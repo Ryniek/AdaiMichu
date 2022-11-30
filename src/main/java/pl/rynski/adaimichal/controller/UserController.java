@@ -26,6 +26,7 @@ import pl.rynski.adaimichal.service.UserService;
 @Validated
 @RequestMapping("/users")
 public class UserController {
+	
 	private final UserService userService;
 	
 	@Secured({"ROLE_USER", "ROLE_ADMIN"})

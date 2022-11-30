@@ -12,7 +12,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Component
 public class LoggingAspect {
-    //zostawiam tymczasowo oba, calkiem przydatne w sumie
+
     //method will execute after each call of any public method from service package
     @After("execution(public * pl.rynski.adaimichal.service.*.*(..))")
     public void logMethod(JoinPoint joinPoint) {
