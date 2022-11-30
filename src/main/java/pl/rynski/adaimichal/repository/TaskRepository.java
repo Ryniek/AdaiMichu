@@ -20,4 +20,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 	Optional<Task> findByIdAndDrawnUser(Long id, User drawnUser);
 	@Query(value = "SELECT t FROM Task t WHERE t.isFinished = TRUE ORDER BY t.finishDate DESC")
 	List<Task> shouldFindAllFinishedSortedByFinishDate();
+	Optional<Task> findByIdAndIsFinishedTrue(Long id);
 }
