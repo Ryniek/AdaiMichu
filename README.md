@@ -47,7 +47,7 @@ Application initially was created only for two people. In the future i'm going t
 #### REST API
 In the application I implemented a tool(OpenAPI) that allows user to interact with the API's resources in a clear way. API is accessible at https://www.api.adaimichu.com/swagger-ui/index.html . To use most of the endpoints firstly you need to use login endpoint and pass returned token to the "Authorize" box in top-right corner of the application. To get USER role login as user/test, to get ADMIN role login as admin/test.
 #### Deployment
-To deploy the application I used 
+Backend of the application is deployed on AWS Elastic Beanstalk that using Amazon RDS database instance. Frontend of the application is deployed on AWS Amplify. I created subdomain 'api' for backend which allowed to generate ssl certificate and front deployed on main domain 'adaimichu'.
 #### Database migration
 
 #### Mobile support
@@ -61,7 +61,10 @@ There are two profiles - prod and dev. "Dev" is used for developing purposes on 
 ## Features
 
 ## To do
-
+ - Possibility to register an account and invite another player to the game via link or special panel.
+ - Implementing refresh token functionality
+ - Filtering tasks
+ - Pagination
 ## Screenshots
 <h3 align="center">User's tasks panel</h3>
 <p align="center">
