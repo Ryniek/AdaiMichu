@@ -42,7 +42,7 @@
 * Docker
 * Insomnia
 ## ERD diagram
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ryniek/AdaiMichu/blob/devel/ERD%20v1.png?raw=true)
 ## Overview
 #### REST API
 
