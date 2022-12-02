@@ -21,7 +21,7 @@
 * [Contact](#contact)
 
 ## Introduction
-
+Application initially was created only for two people. In the future i'm going to develop it to use for more people. The main concept of the application is to have fun with the person you want to use it with. Players have possibility to create a task that can be drawn later by both of them. Drawn task can be used in a specific period of time against other player.
 ## Technologies and libraries used
 <b>1. Backend</b>
 * OpenJDK 17
@@ -44,9 +44,8 @@
 ## ERD diagram
 ![alt text](https://github.com/Ryniek/AdaiMichu/blob/devel/ERD%20v1.png?raw=true)
 ## Overview
-Application initially was created only for two people. In the future i'm going to develop it to use for more people. The main concept of the application is to have fun with the person you want to use it with. Players have possibility to create a task that can be drawn later by both of them. Drawn task can be used in a specific period of time against other player.
 #### REST API
-
+In the application I implemented a tool(OpenAPI) that allows user to interact with the API's resources in a clear way. API is accessible at https://www.api.adaimichu.com/swagger-ui/index.html . To use most of the endpoints firstly you need to use login endpoint and pass returned token to the "Authorize" box in top-right corner of the application. To get USER role login as user/test, to get ADMIN role login as admin/test.
 #### Deployment
 
 #### Database migration
