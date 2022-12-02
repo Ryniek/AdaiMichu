@@ -44,6 +44,7 @@
 ## ERD diagram
 ![alt text](https://github.com/Ryniek/AdaiMichu/blob/devel/ERD%20v1.png?raw=true)
 ## Overview
+Application initially was created only for two people. In the future i'm going to develop it to use for more people. The main concept of the application is to have fun with the person you want to use it with. Players have possibility to create a task that can be drawn later by both of them. Drawn task can be used in a specific period of time against other player.
 #### REST API
 
 #### Deployment
@@ -63,5 +64,26 @@
 ## To do
 
 ## Screenshots
+<h3 align="center">User's tasks panel</h3>
+<p align="center">
+<img src="user_panel.png" width="800"/>
+</p>
+<h3 align="center">Profile panel</h3>
+<p align="center">
+<img src="profile-panel.png" width="800"/>
+</p>
+<h3 align="center">Task editing</h3>
+<p align="center">
+<img src="task-editing.png" width="800"/>
+</p>
+<h3 align="center">Admin panel</h3>
+<p align="center">
+<img src="admin-panel.png" width="800"/>
+</p>
+<h3 align="center">Mobile view</h3>
+<p align="center">
+<img src="rwd.png" width="800"/>
+</p>
 
 ## Contact
+Please don’t hesitate to contact me at michalrynski96@gmail.com
