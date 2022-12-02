@@ -1,0 +1,102 @@
+databaseChangeLog:
+  - changeSet:
+      id: createUsers
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          endDelimiter: \n/\s*\n|\n/\s*$
+          path: changelog/scripts/common/01-create-users-schema.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
+  - changeSet:
+      id: createTasks
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          endDelimiter: \n/\s*\n|\n/\s*$
+          path: changelog/scripts/common/02-create-tasks-schema.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
+  - changeSet:
+      id: insertTestUsers
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          path: changelog/scripts/test/03-insert-test-users.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
+  - changeSet:
+      id: insertTestTasks
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          path: changelog/scripts/test/04-insert-test-tasks.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
+  - changeSet:
+      id: createPasswordResetToken
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          path: changelog/scripts/common/05-create-password-reset-token-schema.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
+  - changeSet:
+      id: alterTaskCreatorNotNull
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          path: changelog/scripts/common/06-alter-task-creator-not-null.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
+  - changeSet:
+      id: createRole
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          path: changelog/scripts/common/07-create-role-schema.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
+  - changeSet:
+      id: insertTestRoles
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          path: changelog/scripts/test/08-insert-test-roles.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
+  - changeSet:
+      id: globalSettings
+      author: mrynski
+      changes:
+      - sqlFile:
+          dbms: mysql
+          encoding: utf8
+          path: changelog/scripts/common/09-global_settings_schema_and_data.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true

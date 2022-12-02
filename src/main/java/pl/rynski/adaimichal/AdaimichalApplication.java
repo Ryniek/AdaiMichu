@@ -11,5 +11,4 @@ public class AdaimichalApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AdaimichalApplication.class, args);
 	}
-
 }

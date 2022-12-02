@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .exposedHeaders("If-Match", "Authorization")
-                .allowedOriginPatterns("http://localhost:3000", "http://localhost:3001", "https://www.adaimichu.com")
+                .allowedOriginPatterns("http://localhost:3000", "http://localhost:3001", "https://www.test.adaimichu.com")
                 .maxAge(3600);
     }
 }
