@@ -13,7 +13,7 @@
   - [Deployment](#deployment)
   - [Database Migration](#database-migration)
   - [Mobile support](#mobile-support)
-  - [Authorization](#authorization)
+  - [Security and authorization](#security-and-authorization)
   - [Tests](#tests)
 * [Features](#features)
 * [To do](#to-do)
@@ -47,17 +47,17 @@ Application initially was created only for two people. In the future i'm going t
 #### REST API
 In the application I implemented a tool(OpenAPI) that allows user to interact with the API's resources in a clear way. API is accessible at https://www.api.adaimichu.com/swagger-ui/index.html . To use most of the endpoints firstly you need to use login endpoint and pass returned token to the "Authorize" box in top-right corner of the application. To get USER role login as user/test, to get ADMIN role login as admin/test.
 #### Deployment
-
+To deploy the application I used 
 #### Database migration
 
 #### Mobile support
-
-#### Authorization
-
+The application can be easily run on most current mobile phones that have access to the Internet via browser. Content should be readable and should easily fit to the screen.
+#### Security and authorization
+Connection between user and server is secured by https protocol. Passwords are encoded and stored as a hash in database. We are not storing any sensitive data. There are two roles in the application - USER and ADMIN. After successfull login to the client returns JWT which must be added to the next request as an Authorization header. Server is responsible for checking if decoded token is valid and if user can get access to the resource.
 #### Tests
 
 #### Profiles
-
+There are two profiles - prod and dev. "Dev" is used for developing purposes on local environment with some sample data. "Prod" profile is currently used only for desired people with untouchable data.
 ## Features
 
 ## To do
