@@ -23,24 +23,26 @@
 ## Introduction
 
 ## Technologies used
-1. Backend
-⋅⋅* OpenJDK 17
-⋅⋅* Spring Boot 2.7.4
-⋅⋅* MySQL Database
-..* Maven 3.6.3
-2. Frontend
-⋅⋅* React 18.2.0
-..* React-Redux 8.0.5
-..* MUI 5.10.14
-3. Tools
-⋅⋅* Eclipse IDE
-⋅⋅* Git
-⋅⋅* Visual Studio Code
-⋅⋅* Dbeaver
-⋅⋅* Docker
-⋅⋅* Insomnia
-## ERD diagram
+<b>1. Backend</b>
+* OpenJDK 17
+* Spring Boot 2.7.4
+* MySQL Database
+* Maven 3.6.3
 
+<b>2. Frontend</b>
+* React 18.2.0
+* React-Redux 8.0.5
+* MUI 5.10.14
+
+<b>3. Tools</b>
+* Eclipse IDE
+* Git
+* Visual Studio Code
+* Dbeaver
+* Docker
+* Insomnia
+## ERD diagram
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
 ## Overview
 #### REST API
 
