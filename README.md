@@ -6,7 +6,7 @@
 ## Table of Contents
 
 * [Introduction](#introduction)
-* [Technologies used](#technologies-used)
+* [Technologies and libraries used](#technologies-and-libraries-used)
 * [ERD diagram](#erd-diagram)
 * [Overview](#overview)
 	- [REST API](#rest-api)
@@ -22,7 +22,7 @@
 
 ## Introduction
 
-## Technologies used
+## Technologies and libraries used
 <b>1. Backend</b>
 * OpenJDK 17
 * Spring Boot 2.7.4
