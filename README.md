@@ -49,22 +49,29 @@ In the application I implemented a tool(OpenAPI) that allows user to interact wi
 #### Deployment
 Backend of the application is deployed on AWS Elastic Beanstalk that using Amazon RDS database instance. Frontend of the application is deployed on AWS Amplify. I created subdomain 'api' for backend which allowed to generate ssl certificate and front deployed on main domain 'adaimichu'.
 #### Database migration
-
+To track and deploy database schema changes I am using Liquibase tool. It allows me to safely making changes in code application without any unexpected data behaviours in production database.
 #### Mobile support
 The application can be easily run on most current mobile phones that have access to the Internet via browser. Content should be readable and should easily fit to the screen.
 #### Security and authorization
 Connection between user and server is secured by https protocol. Passwords are encoded and stored as a hash in database. We are not storing any sensitive data. There are two roles in the application - USER and ADMIN. After successfull login to the client returns JWT which must be added to the next request as an Authorization header. Server is responsible for checking if decoded token is valid and if user can get access to the resource.
 #### Tests
-
+For testing purposes I am using H2 Embedded Database. There are three types of tests in the application. Data layer tests, web layer tests and service layer tests. I tried to cover all cases.
 #### Profiles
 There are two profiles - prod and dev. "Dev" is used for developing purposes on local environment with some sample data. "Prod" profile is currently used only for desired people with untouchable data.
 ## Features
-
+ - Logging into the application with predefined earlier credentials.
+ - Creating and editing(self-created) tasks.
+ - Drawing task from the pool of unstarted and unfinished tasks every certain period of time specified by the admin.
+ - Removing or hiding unstarted, self-created tasks.
+ - Possibility to change password and email address.
+ - Email notifications when your opponent drawn a task or when you are able to draw a new task.
+ - Password reseting using the link in the email
+ - Admin panel for setting global app settings such as time between possibility to draw or password reset link expiration time.
 ## To do
  - Possibility to register an account and invite another player to the game via link or special panel.
- - Implementing refresh token functionality
- - Filtering tasks
- - Pagination
+ - Implementing refresh token functionality.
+ - Filtering tasks.
+ - Pagination.
 ## Screenshots
 <h3 align="center">User's tasks panel</h3>
 <p align="center">
