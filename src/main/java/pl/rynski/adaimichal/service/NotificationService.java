@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import pl.rynski.adaimichal.dao.model.User;
 import pl.rynski.adaimichal.dao.model.enums.NotificationType;
 import pl.rynski.adaimichal.repository.GlobalSettingsRepository;
@@ -19,11 +22,13 @@ import pl.rynski.adaimichal.utils.DateUtils;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationService {
 	
 	private final JavaMailSender emailSender;
 	private final UserRepository userRepository;
 	private final GlobalSettingsRepository globalSettingsRepository;
+	Logger log = LoggerFactory.getLogger(NotificationService.class);
 	
     @Value("${spring.mail.username}")
     private String sourceEmail;
@@ -34,7 +39,11 @@ public class NotificationService {
 		Optional<User> userToNotify = userRepository.findById(id);
 		userToNotify.ifPresent(user -> {
 			if(user.getEmail() != null && user.getEmail().length() != 0) {
-				sendEmail(user.getEmail(), NotificationType.NEW_TASK, null);
+				try {
+					sendEmail(user.getEmail(), NotificationType.NEW_TASK, null);
+				} catch (Exception exception) {
+					log.error(exception.getMessage());
+				}
 			}
 		});
 	}
@@ -48,7 +57,11 @@ public class NotificationService {
 					&& user.getEmail().length() != 0 
 					&& user.getLastDateOfDrawingTask().plusMinutes(globalSettingsRepository.getReferenceById(1L).getMinutesBetweenDrawing()).isBefore(currentTime) 
 					&& user.getNotificationSend() == false) {
-				sendEmail(user.getEmail(), NotificationType.DRAW_TIME, null);
+				try {
+					sendEmail(user.getEmail(), NotificationType.DRAW_TIME, null);
+				} catch (Exception exception) {
+					log.error(exception.getMessage());
+				}
 				user.setNotificationSend(true);
 			}
 		}
